@@ -1,0 +1,56 @@
+{
+  "name": "winternacht-by-suin",
+  "displayName": "Winternacht by suin",
+  "description": "A gentle, warm color theme inspired by quiet winter nights — ephemeral, kind, and intentional.",
+  "version": "0.1.0",
+  "publisher": "suin",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Themes"
+  ],
+  "keywords": [
+    "theme",
+    "dark",
+    "light",
+    "warm",
+    "gentle",
+    "winternacht",
+    "color theme"
+  ],
+  "icon": "icon.png",
+  "galleryBanner": {
+    "color": "#1A1917",
+    "theme": "dark"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/suin/winternacht",
+    "directory": "vscode-theme"
+  },
+  "contributes": {
+    "themes": [
+      {
+        "label": "Winternacht Dark",
+        "uiTheme": "vs-dark",
+        "path": "./themes/winternacht-dark-color-theme.json"
+      },
+      {
+        "label": "Winternacht Light",
+        "uiTheme": "vs",
+        "path": "./themes/winternacht-light-color-theme.json"
+      }
+    ]
+  },
+  "scripts": {
+    "package": "vsce package --no-dependencies",
+    "publish:vsce": "vsce publish --no-dependencies",
+    "publish:ovsx": "ovsx publish"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^3",
+    "ovsx": "^0.10"
+  }
+}

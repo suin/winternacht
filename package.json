@@ -1,0 +1,7 @@
+{
+  "name": "winternacht",
+  "private": true,
+  "workspaces": [
+    "vscode-theme"
+  ]
+}
