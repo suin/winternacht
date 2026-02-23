@@ -43,6 +43,14 @@ ext install suin.winternacht-by-suin
 
 ---
 
+## Markdown Preview Enhanced
+
+A custom theme for [Markdown Preview Enhanced](https://github.com/shd101wyy/vscode-markdown-preview-enhanced) with light/dark mode support, rainbow heading colors, Mermaid diagram theming, and full syntax highlighting using the Winternacht palette.
+
+See [`vscode-markdown-preview-enhanced/`](vscode-markdown-preview-enhanced/) for setup instructions.
+
+---
+
 ## License
 
 MIT
