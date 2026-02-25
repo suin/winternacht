@@ -1,0 +1,184 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+[](color_snow)\
+$os\
+$username\
+[](bg:color_teal fg:color_snow)\
+$directory\
+[](fg:color_teal bg:color_sage)\
+$git_branch\
+$git_status\
+[](fg:color_sage bg:color_lavender)\
+$c\
+$rust\
+$golang\
+$nodejs\
+$php\
+$java\
+$kotlin\
+$haskell\
+$python\
+[](fg:color_lavender bg:color_ash)\
+$docker_context\
+$kubernetes\
+$conda\
+[](fg:color_ash bg:color_charcoal)\
+$cmd_duration\
+[ ](fg:color_charcoal)\
+$line_break$character"""
+
+palette = 'winternacht'
+
+[palettes.winternacht]
+# Segment text
+color_frost = '#3A3835'        # neutral-800
+# Dark segment bands
+color_charcoal = '#3A3835'     # neutral-800
+color_ash = '#504D48'          # neutral-700
+# Segment backgrounds — Scale 300 (vivid identity colors)
+color_snow = '#F1F0EE'         # neutral-200
+color_teal = '#5F9EA8'         # accent-300
+color_sage = '#8CC3CB'         # accent-200
+color_lavender = '#8A7EB0'     # lavender-300
+# Character text on dark bg — Dark Lightened per design system §Dark Mode
+color_green = '#A0C496'        # sage dark-lightened (success)
+color_clay = '#D4A0A0'         # clay dark-lightened (error)
+color_rose = '#D0A0AA'         # rose dark-lightened (vim replace)
+
+[os]
+disabled = false
+style = "bg:color_snow fg:color_frost"
+
+[os.symbols]
+Windows = "󰍲"
+Ubuntu = "󰕈"
+SUSE = ""
+Raspbian = "󰐿"
+Mint = "󰣭"
+Macos = "󰀵"
+Manjaro = ""
+Linux = "󰌽"
+Gentoo = "󰣨"
+Fedora = "󰣛"
+Alpine = ""
+Amazon = ""
+Android = ""
+Arch = "󰣇"
+Artix = "󰣇"
+CentOS = ""
+Debian = "󰣚"
+Redhat = "󱄛"
+RedHatEnterprise = "󱄛"
+
+[username]
+show_always = true
+style_user = "bg:color_snow fg:color_frost"
+style_root = "bg:color_snow fg:color_frost"
+format = '[ $user ]($style)'
+
+[directory]
+style = "fg:color_frost bg:color_teal"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = "󰝚 "
+"Pictures" = " "
+"Developer" = "󰲋 "
+
+[git_branch]
+symbol = ""
+style = "bg:color_sage"
+format = '[[ $symbol $branch ](fg:color_frost bg:color_sage)]($style)'
+
+[git_status]
+style = "bg:color_sage"
+format = '[[($all_status$ahead_behind )](fg:color_frost bg:color_sage)]($style)'
+
+[nodejs]
+symbol = ""
+style = "bg:color_lavender"
+format = '[[ $symbol( $version) ](fg:color_frost bg:color_lavender)]($style)'
+
+[c]
+symbol = " "
+style = "bg:color_lavender"
+format = '[[ $symbol( $version) ](fg:color_frost bg:color_lavender)]($style)'
+
+[rust]
+symbol = ""
+style = "bg:color_lavender"
+format = '[[ $symbol( $version) ](fg:color_frost bg:color_lavender)]($style)'
+
+[golang]
+symbol = ""
+style = "bg:color_lavender"
+format = '[[ $symbol( $version) ](fg:color_frost bg:color_lavender)]($style)'
+
+[php]
+symbol = ""
+style = "bg:color_lavender"
+format = '[[ $symbol( $version) ](fg:color_frost bg:color_lavender)]($style)'
+
+[java]
+symbol = " "
+style = "bg:color_lavender"
+format = '[[ $symbol( $version) ](fg:color_frost bg:color_lavender)]($style)'
+
+[kotlin]
+symbol = ""
+style = "bg:color_lavender"
+format = '[[ $symbol( $version) ](fg:color_frost bg:color_lavender)]($style)'
+
+[haskell]
+symbol = ""
+style = "bg:color_lavender"
+format = '[[ $symbol( $version) ](fg:color_frost bg:color_lavender)]($style)'
+
+[python]
+symbol = ""
+style = "bg:color_lavender"
+format = '[[ $symbol( $version) ](fg:color_frost bg:color_lavender)]($style)'
+
+[docker_context]
+symbol = ""
+style = "bg:color_ash"
+format = '[[ $symbol( $context) ](fg:color_teal bg:color_ash)]($style)'
+
+[kubernetes]
+symbol = "⎈"
+style = "bg:color_ash"
+format = '[[ $symbol( $context(\($namespace\))) ](fg:color_teal bg:color_ash)]($style)'
+disabled = false
+
+[conda]
+style = "bg:color_ash"
+format = '[[ $symbol( $environment) ](fg:color_teal bg:color_ash)]($style)'
+
+[time]
+disabled = true
+time_format = "%R"
+style = "bg:color_charcoal"
+format = '[[  $time ](fg:color_frost bg:color_charcoal)]($style)'
+
+[cmd_duration]
+min_time = 500
+format = '[[  $duration ](fg:color_frost bg:color_charcoal)]($style)'
+style = "bg:color_charcoal"
+show_milliseconds = false
+
+[line_break]
+disabled = false
+
+[character]
+disabled = false
+success_symbol = '[](bold fg:color_green)'
+error_symbol = '[](bold fg:color_clay)'
+vimcmd_symbol = '[](bold fg:color_green)'
+vimcmd_replace_one_symbol = '[](bold fg:color_rose)'
+vimcmd_replace_symbol = '[](bold fg:color_rose)'
+vimcmd_visual_symbol = '[](bold fg:color_teal)'
