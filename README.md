@@ -43,6 +43,38 @@ ext install suin.winternacht-by-suin
 
 ---
 
+## Terminal Themes
+
+### Ghostty
+
+> *Winternacht* and *Winternacht Light*
+
+A gentle, warm color theme for [Ghostty](https://ghostty.org/) with dark and light variants.
+
+See [`ghostty/`](ghostty/) for setup instructions.
+
+### Tabby
+
+> *Winternacht* and *Winternacht Light*
+
+A gentle, warm color theme for [Tabby](https://tabby.sh/) with dark and light variants. Available as a plugin or manual YAML config.
+
+Install from Tabby's plugin manager: search for `tabby-theme-winternacht-by-suin`.
+
+See [`tabby/`](tabby/) for details.
+
+---
+
+## Prompt Themes
+
+### Starship
+
+A quiet, warm-toned [Starship](https://starship.rs/) prompt theme with colors drawn from the Winternacht palette.
+
+See [`starship/`](starship/) for setup instructions.
+
+---
+
 ## Markdown Preview Enhanced
 
 A custom theme for [Markdown Preview Enhanced](https://github.com/shd101wyy/vscode-markdown-preview-enhanced) with light/dark mode support, rainbow heading colors, Mermaid diagram theming, and full syntax highlighting using the Winternacht palette.
