@@ -1,0 +1,44 @@
+# Winternacht — Dark
+# A quiet, warm dark theme. Gentle yet intentional.
+# https://github.com/suin/winternacht
+
+background = #1A1917
+foreground = #D6D3CE
+cursor-color = #8CC3CB
+cursor-text = #1A1917
+selection-background = #3A4A4C
+selection-foreground = #FCFCFB
+
+# Black
+palette = 0=#242320
+# Red (Clay)
+palette = 1=#B87070
+# Green (Sage)
+palette = 2=#7A9E72
+# Yellow (Sand)
+palette = 3=#C29E5E
+# Blue (Slate)
+palette = 4=#6B8BBF
+# Magenta (Lavender)
+palette = 5=#8A7EB0
+# Cyan (Accent)
+palette = 6=#5F9EA8
+# White
+palette = 7=#D5D3CF
+
+# Bright Black
+palette = 8=#7A7672
+# Bright Red (Clay Lightened)
+palette = 9=#D4A0A0
+# Bright Green (Sage Lightened)
+palette = 10=#A0C496
+# Bright Yellow (Sand Lightened)
+palette = 11=#D4B87A
+# Bright Blue (Slate Lightened)
+palette = 12=#8DAFD4
+# Bright Magenta (Lavender Lightened)
+palette = 13=#B0A4D0
+# Bright Cyan (Accent 200)
+palette = 14=#8CC3CB
+# Bright White
+palette = 15=#FCFCFB

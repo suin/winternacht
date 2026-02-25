@@ -1,0 +1,44 @@
+# Winternacht Light
+# A quiet, warm light theme. Gentle yet intentional.
+# https://github.com/suin/winternacht
+
+background = #FCFCFB
+foreground = #3A3835
+cursor-color = #5F9EA8
+cursor-text = #FCFCFB
+selection-background = #D0E4E6
+selection-foreground = #242320
+
+# Black
+palette = 0=#3A3835
+# Red (Clay)
+palette = 1=#8E5050
+# Green (Sage)
+palette = 2=#587850
+# Yellow (Sand)
+palette = 3=#8E7040
+# Blue (Slate)
+palette = 4=#4A5870
+# Magenta (Lavender)
+palette = 5=#635788
+# Cyan (Accent)
+palette = 6=#3D7A83
+# White
+palette = 7=#F1F0EE
+
+# Bright Black
+palette = 8=#7A7672
+# Bright Red (Clay)
+palette = 9=#B87070
+# Bright Green (Sage)
+palette = 10=#7A9E72
+# Bright Yellow (Sand)
+palette = 11=#C29E5E
+# Bright Blue (Slate)
+palette = 12=#6B8BBF
+# Bright Magenta (Lavender)
+palette = 13=#8A7EB0
+# Bright Cyan (Accent)
+palette = 14=#5F9EA8
+# Bright White
+palette = 15=#FCFCFB
