@@ -2,6 +2,7 @@
   "name": "winternacht",
   "private": true,
   "workspaces": [
-    "vscode-theme"
+    "vscode-theme",
+    "tabby"
   ]
 }
