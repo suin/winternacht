@@ -41,6 +41,16 @@ Install from the [VS Code Marketplace](https://marketplace.visualstudio.com/item
 ext install suin.winternacht-by-suin
 ```
 
+### Zed
+
+> *Winternacht Dark* and *Winternacht Light*
+
+A gentle, warm color theme for [Zed](https://zed.dev/) with dark and light variants.
+
+Install from Zed's extension manager: search for **Winternacht**.
+
+See [`zed-editor-theme/`](zed-editor-theme/) for details.
+
 ---
 
 ## Terminal Themes
