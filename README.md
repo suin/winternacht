@@ -55,6 +55,12 @@ See [`zed-editor-theme/`](zed-editor-theme/) for details.
 
 ## Terminal Themes
 
+### tmux
+
+A gentle, warm status line theme for [tmux](https://github.com/tmux/tmux) with Nerd Font separators and an exposed color palette for script integration.
+
+See [`tmux/`](tmux/) for setup instructions.
+
 ### Ghostty
 
 > *Winternacht* and *Winternacht Light*
