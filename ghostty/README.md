@@ -9,16 +9,11 @@ Includes both **Dark** and **Light** variants.
 Copy the theme files into your Ghostty themes directory:
 
 ```sh
-# macOS
-mkdir -p ~/Library/Application\ Support/com.mitchellh.ghostty/themes
-cp themes/* ~/Library/Application\ Support/com.mitchellh.ghostty/themes/
-
-# Linux
 mkdir -p ~/.config/ghostty/themes
 cp themes/* ~/.config/ghostty/themes/
 ```
 
-Then add to your Ghostty config:
+Then add to your Ghostty config (`~/.config/ghostty/config` or `~/Library/Application Support/com.mitchellh.ghostty/config` on macOS):
 
 ```toml
 # Dark only
