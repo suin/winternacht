@@ -91,6 +91,16 @@ See [`starship/`](starship/) for setup instructions.
 
 ---
 
+## Git Tools
+
+### delta
+
+A quiet, warm diff theme for [delta](https://github.com/dandavison/delta) with subtle Clay/Sage diff highlighting.
+
+See [`delta/`](delta/) for setup instructions.
+
+---
+
 ## Markdown Preview Enhanced
 
 A custom theme for [Markdown Preview Enhanced](https://github.com/shd101wyy/vscode-markdown-preview-enhanced) with light/dark mode support, rainbow heading colors, Mermaid diagram theming, and full syntax highlighting using the Winternacht palette.

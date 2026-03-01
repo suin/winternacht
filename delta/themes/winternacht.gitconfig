@@ -1,0 +1,31 @@
+[delta "winternacht"]
+    dark = true
+    syntax-theme = ansi
+
+    # Diff: removed lines
+    minus-style = syntax "#27201E"
+    minus-emph-style = syntax "#3A2A29"
+
+    # Diff: added lines
+    plus-style = syntax "#22241E"
+    plus-emph-style = syntax "#2D3429"
+
+    # Line numbers
+    line-numbers-minus-style = "#B87070"
+    line-numbers-plus-style = "#7A9E72"
+    line-numbers-zero-style = "#6B6862"
+    line-numbers-left-style = "#504D48"
+    line-numbers-right-style = "#504D48"
+
+    # File headers
+    file-style = bold "#8CC3CB"
+    file-decoration-style = "#5F9EA8" ul
+
+    # Hunk headers
+    hunk-header-decoration-style = "#504D48" box
+
+    # Commits
+    commit-style = bold "#D4B87A"
+
+    # Blame
+    blame-palette = "#1A1917 #1E1D1B #242320 #201F1D"
