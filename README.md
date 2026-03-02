@@ -79,6 +79,12 @@ Install from Tabby's plugin manager: search for `tabby-theme-winternacht-by-suin
 
 See [`tabby/`](tabby/) for details.
 
+### fzf
+
+A quiet, warm-toned color theme for [fzf](https://github.com/junegunn/fzf) drawn from the Winternacht palette.
+
+See [`fzf/`](fzf/) for setup instructions.
+
 ---
 
 ## Prompt Themes

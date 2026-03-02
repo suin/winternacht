@@ -1,0 +1,17 @@
+# Winternacht theme for fzf
+# https://github.com/suin/winternacht
+#
+# A quiet, warm-toned color theme drawn from the Winternacht palette.
+# Add to ~/.bashrc or ~/.zshrc:
+#   source /path/to/winternacht/fzf/themes/winternacht.sh
+
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
+  --color=fg:#D6D3CE,bg:#1A1917,hl:#5F9EA8 \
+  --color=fg+:#D6D3CE,bg+:#242320,hl+:#8CC3CB \
+  --color=info:#7A7672,prompt:#8CC3CB,pointer:#8CC3CB \
+  --color=marker:#A0C496,spinner:#8CC3CB,header:#BAB7B2 \
+  --color=border:#504D48,separator:#504D48,scrollbar:#6B6862 \
+  --color=gutter:#1A1917,selected-bg:#3A3835,selected-hl:#8CC3CB \
+  --color=label:#BAB7B2,preview-fg:#D6D3CE,preview-bg:#1A1917 \
+  --border=rounded \
+  --scrollbar='│'"
