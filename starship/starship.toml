@@ -32,7 +32,7 @@ palette = 'winternacht'
 
 [palettes.winternacht]
 # Segment text
-color_frost = '#3A3835'        # neutral-800
+color_frost = '#222120'        # neutral-900
 # Dark segment bands
 color_charcoal = '#3A3835'     # neutral-800
 color_ash = '#504D48'          # neutral-700
@@ -147,27 +147,27 @@ format = '[[ $symbol( $version) ](fg:color_frost bg:color_lavender)]($style)'
 [docker_context]
 symbol = ""
 style = "bg:color_ash"
-format = '[[ $symbol( $context) ](fg:color_teal bg:color_ash)]($style)'
+format = '[[ $symbol( $context) ](fg:color_snow bg:color_ash)]($style)'
 
 [kubernetes]
 symbol = "⎈"
 style = "bg:color_ash"
-format = '[[ $symbol( $context(\($namespace\))) ](fg:color_teal bg:color_ash)]($style)'
+format = '[[ $symbol( $context(\($namespace\))) ](fg:color_snow bg:color_ash)]($style)'
 disabled = false
 
 [conda]
 style = "bg:color_ash"
-format = '[[ $symbol( $environment) ](fg:color_teal bg:color_ash)]($style)'
+format = '[[ $symbol( $environment) ](fg:color_snow bg:color_ash)]($style)'
 
 [time]
 disabled = true
 time_format = "%R"
 style = "bg:color_charcoal"
-format = '[[  $time ](fg:color_frost bg:color_charcoal)]($style)'
+format = '[[  $time ](fg:color_snow bg:color_charcoal)]($style)'
 
 [cmd_duration]
 min_time = 500
-format = '[[  $duration ](fg:color_frost bg:color_charcoal)]($style)'
+format = '[[  $duration ](fg:color_snow bg:color_charcoal)]($style)'
 style = "bg:color_charcoal"
 show_milliseconds = false
 
