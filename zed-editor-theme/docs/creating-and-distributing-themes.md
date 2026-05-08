@@ -624,32 +624,83 @@ The `accents` array defines a set of accent colors available throughout the UI:
 
 The Markdown preview panel in Zed does **not** have its own dedicated theme properties. There is no `markdown.*` or `preview.*` namespace in the theme schema. Instead, the preview renderer reuses existing general-purpose theme tokens to derive its appearance.
 
+Since Zed 1.1, however, you can choose **which whole theme the preview itself uses**, independently of the editor theme. See [Choosing a Separate Theme for the Preview](#choosing-a-separate-theme-for-the-preview) below.
+
 #### How Theme Tokens Map to Preview Elements
 
-The following table shows which theme properties control specific elements in the rendered Markdown preview panel (source: `crates/markdown_preview/src/markdown_renderer.rs` in the Zed repository):
+The following table is verified against the Zed source (`crates/markdown/src/markdown.rs`, primarily `MarkdownStyle::themed_with_overrides` ~L160–295 and the per-element render functions ~L1186–2030). Token names use the JSON form that appears in a theme file.
 
-| Preview Element                   | Theme Property Used                            |
-| --------------------------------- | ---------------------------------------------- |
-| Preview background                | `editor.background`                            |
-| Body text                         | `text`                                         |
-| H1--H5 heading text               | `text`                                         |
-| H6 heading text                   | `text.muted`                                   |
-| Links                             | `text.accent`                                  |
-| Code block background             | `surface.background`                           |
-| Inline code background            | `editor.document_highlight.read_background`    |
-| Code block syntax highlighting    | `syntax` (all syntax tokens apply)             |
-| Blockquote border                 | `border`                                       |
-| Table header row background       | `title_bar.background`                         |
-| Table alternating row background  | `panel.background`                             |
-| Table borders                     | `border`                                       |
-| Selected block indicator          | `border`                                       |
-| Hovered block indicator           | `border.variant`                               |
+| Preview Element                       | Theme Token / Source                                          |
+| ------------------------------------- | ------------------------------------------------------------- |
+| Preview background                    | `editor.background`                                           |
+| Body text color                       | `text`                                                        |
+| All heading colors (H1--H6)           | `text` (the `text.muted` H6 path is **Agent-panel only**)     |
+| Link color                            | `text.accent`                                                 |
+| Link background                       | derived: `editor.foreground` × `0.025` opacity                |
+| Link underline                        | derived: `text.accent` × `0.5` opacity, 1px                   |
+| Inline code background                | derived: `editor.foreground` × `0.08` opacity                 |
+| Code block background                 | `editor.background`                                           |
+| Code block border                     | `border.variant`                                              |
+| Code block syntax highlighting        | `syntax.*` (all syntax tokens apply inside fenced blocks)     |
+| Blockquote border (default)           | `border`                                                      |
+| GFM alert border `> [!NOTE]`          | `status.info`                                                 |
+| GFM alert border `> [!TIP]`           | `status.success`                                              |
+| GFM alert border `> [!IMPORTANT]`     | `status.info`                                                 |
+| GFM alert border `> [!WARNING]`       | `status.warning`                                              |
+| GFM alert border `> [!CAUTION]`       | `status.error`                                                |
+| Horizontal rule color                 | `border`                                                      |
+| Footnote separator                    | `border`                                                      |
+| Table border                          | `border` (1.5px)                                              |
+| Table header row background           | `title_bar.background`                                        |
+| Table odd-row alternating background  | `panel.background`                                            |
+| Selection background                  | `element_selection_background`                                |
+| Active root-block indicator           | `border`                                                      |
+| Hovered root-block indicator          | `border.variant`                                              |
 
-Because these properties are shared with other parts of the UI, changing them to adjust the preview will also affect the title bar, panels, borders, and other elements.
+A few important notes on this table:
 
-#### Font Settings
+- The earlier-version of this document had several entries wrong: code block background is **not** `surface.background`, and inline code background is **not** `editor.document_highlight.read_background`. Both are derived from `editor.foreground` opacity. Trust the source-verified table above.
+- The `text.muted` H6 mapping only applies when `MarkdownFont::Agent` is active (the Agent panel chat). In the preview, all heading levels use `text`. This is because `heading_level_styles` is only populated for `MarkdownFont::Agent` (`markdown.rs` ~L270).
+- GFM alerts (`> [!NOTE]` etc.) read from `status.*` tokens, which means the same five colors that drive diagnostics are reused for prose annotation. Tuning them affects both contexts unless you use a separate theme via `markdown_preview_theme`.
+- Many of these tokens (`editor.background`, `border`, `panel.background`, `title_bar.background`, `status.*`) are shared with the editor UI. Adjusting them to tune the preview will also affect editor chrome, side panels, status bar, and diagnostic markers. See [Building a Reading-Optimized Variant](#building-a-reading-optimized-variant).
 
-The Markdown preview uses `buffer_font_size` and `buffer_line_height` from Zed's settings (not `ui_font_size`). Heading sizes are calculated as multiples of the buffer font size.
+#### Font and Heading Sizes
+
+Verified against Zed `1.1.6` source:
+
+- **Body text** is sized from `ui_font_size` (not `buffer_font_size`).
+- **Headings** are sized via gpui's text-size scale, **not** rem multiples in the preview:
+
+  | Heading | gpui size class | Approximate value |
+  | ------- | --------------- | ----------------- |
+  | H1      | `text_3xl`      | 30px              |
+  | H2      | `text_2xl`      | 24px              |
+  | H3      | `text_xl`       | 20px              |
+  | H4      | `text_lg`       | 18px              |
+  | H5      | `text_base`     | 16px              |
+  | H6      | `text_sm`       | 14px              |
+
+  These sizes are hardcoded and not configurable from theme or settings. The rem-based heading sizes (`1.15rem` → `0.875rem`) that show up in the source apply only when `MarkdownFont::Agent` is the active font — i.e. in the Agent panel — not in the Markdown preview.
+
+- **Code blocks** inside the preview use `buffer_font_size` and the `buffer_font` family. They are the only preview elements that scale with `cmd-=` / `cmd--` today ([Issue #55374](https://github.com/zed-industries/zed/issues/55374), [PR #55489](https://github.com/zed-industries/zed/pull/55489) is in flight to scale body and headings together).
+- **Preview body font family** can be overridden independently via the `markdown_preview_font_family` setting (Zed 1.1+).
+- **Paragraph line-height is hardcoded** to `rems(1.3)` in the renderer (`markdown.rs` ~L1164–1165). It cannot be changed from settings, theme, or language scope. Acceptable for Latin scripts; cramped for CJK prose. See [Discussion #56111](https://github.com/zed-industries/zed/discussions/56111) for the open feature request.
+- `buffer_line_height` does **not** affect preview rendering. It is read only by `line_scroll_amount` to compute scroll distance, despite the name suggesting otherwise.
+
+#### Fixed Spacing Inside the Preview
+
+The following dimensions are hardcoded in the renderer and cannot be changed from settings or themes:
+
+| Element                | Value                                          |
+| ---------------------- | ---------------------------------------------- |
+| Paragraph line-height  | `rems(1.3)`                                    |
+| Heading top margin     | 16px (`mt_4`)                                  |
+| Heading bottom margin  | 8px (`mb_2`)                                   |
+| Code block padding     | 8px on all sides                               |
+| Code block margin      | top 8px, bottom 12px                           |
+| Table cell padding     | 4px horizontal, 2px vertical                   |
+| Table border thickness | 1.5px                                          |
+| Code block border      | 1px                                            |
 
 #### Markdown Editor Syntax Highlighting vs. Preview
 
@@ -670,19 +721,82 @@ It is important to distinguish between the **editor** syntax highlighting for `.
 
 - **Rendered preview** uses the general UI tokens mapped above. The `syntax` tokens only affect code blocks within the preview (for syntax-highlighted fenced code blocks).
 
+#### Choosing a Separate Theme for the Preview
+
+Zed 1.1 added two settings that let the Markdown preview render with a different theme and font from the editor ([PR #54003](https://github.com/zed-industries/zed/pull/54003)):
+
+| Setting                        | Purpose                                            | When unset                              |
+| ------------------------------ | -------------------------------------------------- | --------------------------------------- |
+| `markdown_preview_theme`       | Name of the theme used to render the preview pane. | Falls back to the editor's active theme. |
+| `markdown_preview_font_family` | Font family used inside the preview pane.          | Falls back to the UI font.              |
+
+Example `settings.json`:
+
+```json
+{
+  "theme": {
+    "mode": "system",
+    "light": "Winternacht Light",
+    "dark": "Winternacht Dark"
+  },
+  "markdown_preview_theme": "Winternacht Dark",
+  "markdown_preview_font_family": "Inter"
+}
+```
+
+Important: `markdown_preview_theme` only selects **which theme** the preview reads from. It does **not** add a Markdown-specific token namespace — the preview still derives every color from the general tokens listed in [How Theme Tokens Map to Preview Elements](#how-theme-tokens-map-to-preview-elements) above. Use this setting when you want a different overall theme for the preview (for example, an editor in a Dark theme but a Light theme for the preview), not as a way to style individual Markdown elements.
+
+Other rendering changes shipped alongside this in the 1.1 line affect how previews look across themes:
+
+- GFM alert callouts (`> [!NOTE]`, `> [!WARNING]`, etc.) are now rendered.
+- Horizontal rules and blockquotes are now consistently visible.
+- Table-cell checkboxes are clickable, matching list-item checkboxes.
+- Selection and search highlights inside the rendered preview were corrected.
+
+If a preview previously "looked right" but now feels off after upgrading, the renderer changes above — not the theme file — are the most likely cause.
+
+#### Building a Reading-Optimized Variant
+
+Because so many preview tokens are shared with the editor and panel chrome, the most effective way to tune the preview without disturbing the editor is to **ship an additional theme** that lives alongside your main theme and that the user selects via `markdown_preview_theme`.
+
+A reading variant typically diverges from the editor variant on a small number of tokens:
+
+| Token                      | Editor variant goal                  | Reading variant goal                                          |
+| -------------------------- | ------------------------------------ | ------------------------------------------------------------- |
+| `border`                   | Subtle separators                    | Stronger to delineate blockquotes, HRs, and table edges       |
+| `border.variant`           | Quiet code-block frames              | Slightly stronger so code blocks read as discrete blocks      |
+| `text.accent`              | Calm UI accents                      | Higher contrast for link visibility                           |
+| `title_bar.background`     | Window chrome tone                   | More differentiated from `editor.background` for table headers |
+| `panel.background`         | Side-panel surface                   | Subtly distinct for table alternating rows                    |
+| `status.info`              | Informational diagnostic color       | Same hue, tuned for sustained reading of `> [!NOTE]`          |
+| `status.success`           | Success diagnostic color             | Tuned for `> [!TIP]`                                          |
+| `status.warning`           | Warning diagnostic color             | Tuned for `> [!WARNING]`                                      |
+| `status.error`             | Error diagnostic color               | Tuned for `> [!CAUTION]`                                      |
+
+The remaining tokens (`editor.background`, `text`, `text.muted`, `editor.foreground`, `syntax.*`, etc.) usually stay identical to the editor variant, so the reading and editor experiences feel like the same theme.
+
+A reading variant is **not** a workaround for the hardcoded dimensions in [Fixed Spacing Inside the Preview](#fixed-spacing-inside-the-preview); it can only adjust colors. For line-height, padding, and heading scale, follow the upstream issues linked in [Limitations](#limitations).
+
+##### Caveat: no system light/dark switching for the preview theme
+
+`markdown_preview_theme` accepts a single string. It does **not** support the `{ "mode": "system", "light": ..., "dark": ... }` form that `theme` accepts. If you ship both a Reading Light and a Reading Dark variant, users currently have to pick one and live with it across system theme changes. Tracking this as a separate enhancement upstream is reasonable.
+
 #### Limitations
 
-The following features have been requested but are **not yet implemented** as of early 2026:
+The following theme-side capabilities have been requested but are **still not implemented** as of May 2026:
 
+- **Per-element Markdown tokens** -- There is still no `markdown.*` or `preview.*` namespace in the theme schema. `markdown_preview_theme` selects an entire theme; it does not expose new element-level tokens.
+- **Configurable paragraph line-height** -- The paragraph `line-height` is hardcoded to `rems(1.3)` in `crates/markdown/src/markdown.rs`. No setting, theme, or language scope can override it. `1.3` is acceptable for Latin scripts but cramped for CJK prose ([Discussion #56111](https://github.com/zed-industries/zed/discussions/56111)).
 - **Custom CSS for the preview** -- A proposed `preview_styles` setting for injecting custom CSS has not been implemented ([Discussion #43384](https://github.com/zed-industries/zed/discussions/43384)).
 - **Per-heading-level colors** -- A PR to support `markup.heading.1` through `markup.heading.6` syntax tokens was closed without merging ([Issue #14115](https://github.com/zed-industries/zed/issues/14115), [PR #31477](https://github.com/zed-industries/zed/pull/31477)). All heading levels (H1--H5) share the same `text` color, and H6 uses `text.muted`.
-- **Dedicated preview theme section** -- There is no isolated set of theme properties for the preview panel ([Discussion #23951](https://github.com/zed-industries/zed/discussions/23951)).
+- **Dedicated preview theme section inside a theme file** -- There is no isolated set of theme properties scoped to the preview panel ([Discussion #23951](https://github.com/zed-industries/zed/discussions/23951)). `markdown_preview_theme` works around this by swapping the whole theme, not by carving out a preview-only section.
 
 #### Key Source Files
 
-- [`crates/markdown_preview/src/markdown_renderer.rs`](https://github.com/zed-industries/zed/blob/main/crates/markdown_preview/src/markdown_renderer.rs) -- How the preview maps theme tokens to elements
-- [`crates/markdown_preview/src/markdown_preview_view.rs`](https://github.com/zed-industries/zed/blob/main/crates/markdown_preview/src/markdown_preview_view.rs) -- Background and font settings
-- [`crates/languages/src/markdown/highlights.scm`](https://github.com/zed-industries/zed/blob/main/crates/languages/src/markdown/highlights.scm) -- Tree-sitter queries for editor syntax highlighting
+- [`crates/markdown/src/markdown.rs`](https://github.com/zed-industries/zed/blob/main/crates/markdown/src/markdown.rs) -- The Markdown renderer itself: how each element maps to theme tokens, default `MarkdownStyle`, paragraph `line_height(rems(1.3))` (~L1164), heading `rem` sizes, and `MarkdownFont::Preview` font selection.
+- [`crates/markdown_preview/src/markdown_preview_view.rs`](https://github.com/zed-industries/zed/blob/main/crates/markdown_preview/src/markdown_preview_view.rs) -- Preview pane wiring: scroll handling (`line_scroll_amount` is the only consumer of `buffer_line_height`), keymap context, focus.
+- [`crates/markdown_preview/src/markdown_preview.rs`](https://github.com/zed-industries/zed/blob/main/crates/markdown_preview/src/markdown_preview.rs) -- Crate entry point that registers the preview view with the workspace.
+- [`crates/languages/src/markdown/highlights.scm`](https://github.com/zed-industries/zed/blob/main/crates/languages/src/markdown/highlights.scm) -- Tree-sitter queries for editor syntax highlighting (does not affect the preview).
 
 ---
 
